@@ -4,7 +4,6 @@
 import numpy as np
 from numpy.typing import NDArray
 
-
 class Perceptron:
     """simple perceptron classifier for linearly seperable binary classification.
     
@@ -80,7 +79,7 @@ class Perceptron:
         for _ in range(self.n_iter):
             errors = 0
             for xi, target in zip(X,y):
-                delta = self.learning_rate*(target - self.pedict(xi))
+                delta = self.learning_rate*(target - self.predict(xi))
                 self.w_ += delta*xi
                 self.b_ += delta
                 errors += 1 if delta != 0.0 else 0
