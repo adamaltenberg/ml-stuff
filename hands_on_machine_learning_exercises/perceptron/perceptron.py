@@ -99,7 +99,7 @@ class Perceptron:
         return np.where(self.net_input(x) >= 0.0, 1, 0)
     
     def plot_decision_regions(self, X: NDArray[np.float64], y: NDArray[np.int8], resolution: float = 0.02) -> None:
-        '''plot the predicted decision boundaries/regions'''
+        """plot the predicted decision boundaries/regions"""
         # marker generator and colour map
         names = ('Setosa', 'Versicolor', 'Virginica')
         markers = ('o', 's', '^', 'v', '<')
