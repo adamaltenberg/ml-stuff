@@ -4,7 +4,14 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
 
-def plot_decision_regions(classifier, X: NDArray[np.float64], y: NDArray[np.int8], resolution: float = 0.02) -> None:
+def plot_decision_regions(
+    classifier,
+    X: NDArray[np.float64],
+    y: NDArray[np.int8],
+    resolution: float = 0.02,
+    mark_split: bool = False,
+    test_idx: NDArray[np.int_] | list[int] | None = None,
+) -> None:
     """Plot the predicted decision boundaries/regions for a fitted classifier.
     
     parameters
@@ -17,6 +24,10 @@ def plot_decision_regions(classifier, X: NDArray[np.float64], y: NDArray[np.int8
         target labels
     resolution : float, default=0.02
         step size for the meshgrid
+    mark_split : bool, default=False
+        if True, visually marks examples provided by `test_idx` as test samples
+    test_idx : array-like of int, optional
+        indices of test-set samples in X; used only when mark_split=True
     """
     # marker generator and colour map
     names = ('Setosa', 'Versicolor', 'Virginica')
@@ -44,3 +55,53 @@ def plot_decision_regions(classifier, X: NDArray[np.float64], y: NDArray[np.int8
                     marker=markers[i],
                     label=names[cl],
                     edgecolors='black')
+
+    if mark_split and test_idx is not None:
+        test_idx = np.asarray(test_idx)
+        plt.scatter(
+            X[test_idx, 0],
+            X[test_idx, 1],
+            c='none',
+            edgecolors='black',
+            alpha=1.0,
+            linewidth=1,
+            marker='o',
+            s=100,
+            label='Test set',
+        )
+
+def sigmoid(z):
+    return 1.0 / (1.0 + np.exp(-z))
+    
+if __name__ == "__main__":
+    z = np.arange(-7, 7, 0.1)
+    sigma_z = sigmoid(z)
+    plt.plot(z, sigma_z)
+    plt.axvline(0.0, color='k')
+    plt.ylim(-0.1, 1.1)
+    plt.xlabel('z')
+    plt.ylabel('$\sigma (z)$')
+    # y axis ticks and gridline
+    plt.yticks([0.0, 0.5, 1.0])
+    ax = plt.gca()
+    ax.yaxis.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+    def loss_1(z):
+        return - np.log(sigmoid(z))
+    def loss_0(z):
+        return - np.log(1 - sigmoid(z))
+    z = np.arange(-10, 10, 0.1)
+    sigma_z = sigmoid(z)
+    c1 = [loss_1(x) for x in z]
+    plt.plot(sigma_z, c1, label='L(w, b) if y=1')
+    c0 = [loss_0(x) for x in z]
+    plt.plot(sigma_z, c0, linestyle='--', label='L(w, b) if y=0')
+    plt.ylim(0.0, 5.1)
+    plt.xlim([0, 1])
+    plt.xlabel('$\sigma(z)$')
+    plt.ylabel('L(w, b)')
+    plt.legend(loc='best')
+    plt.tight_layout()
+    plt.show()
