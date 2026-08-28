@@ -30,7 +30,6 @@ def plot_decision_regions(
         indices of test-set samples in X; used only when mark_split=True
     """
     # marker generator and colour map
-    names = ('Setosa', 'Versicolor', 'Virginica')
     markers = ('o', 's', '^', 'v', '<')
     colours = ('red', 'blue', 'lightgreen', 'gray', 'cyan')
     cmap = ListedColormap(colours[:len(np.unique(y))])
@@ -53,7 +52,7 @@ def plot_decision_regions(
                     alpha=0.8,
                     color=colours[i],
                     marker=markers[i],
-                    label=names[cl],
+                    label=f"Class {cl}",
                     edgecolors='black')
 
     if mark_split and test_idx is not None:
@@ -79,8 +78,8 @@ if __name__ == "__main__":
     plt.plot(z, sigma_z)
     plt.axvline(0.0, color='k')
     plt.ylim(-0.1, 1.1)
-    plt.xlabel('z')
-    plt.ylabel('$\sigma (z)$')
+    # plt.xlabel('z')
+    # plt.ylabel('$\sigma (z)$')
     # y axis ticks and gridline
     plt.yticks([0.0, 0.5, 1.0])
     ax = plt.gca()
